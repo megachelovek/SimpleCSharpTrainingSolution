@@ -7,16 +7,15 @@ using System.Text;
 
 namespace Work2
 {
-    class MenuRepository : IMenuRepository
+    public class MenuRepository : IMenuRepository
     {
         public IEnumerable<MenuItem> GetMenuItems(string username)
         {
             MenuItem[] result = null;
-            Dictionary<string, MenuItem> dataBaseDictionary = new Dictionary<string, MenuItem>(); // Этот словарь получили извне
+            Dictionary<string, MenuItem> dataBaseDictionary = GetTestData(); // Этот словарь получили извне
             try
             {
                 if (!TrySaveCacheMenuItems(dataBaseDictionary)){
-                    //Логгирование, что не закешировалось
                 }
                 result = FillArrayItemsFromDictionary(dataBaseDictionary);
             }
@@ -32,7 +31,7 @@ namespace Work2
         {
             try
             {
-                FileInfo file = new FileInfo("C://TestCache/testCache.txt");
+                FileInfo file = new FileInfo("C://testCache.txt");
                 if (file.Exists)
                 {
                     file.Delete();
@@ -45,8 +44,9 @@ namespace Work2
                 }
                 return true;
             }
-            catch
+            catch (Exception ex)
             {
+                string mes = ex.Message;
                 return false;
             }
         }
@@ -59,6 +59,14 @@ namespace Work2
                 result[0] = dataBaseDictionary.Values.ElementAt(i);
             }
             return result;
+        }
+
+        private Dictionary<string, MenuItem> GetTestData()
+        {
+            Dictionary<string, MenuItem> testData = new Dictionary<string, MenuItem>();
+            testData.Add("test1", new MenuItem(0, "menu1", new string[] { "user1", "user2" }));
+            testData.Add("test2", new MenuItem(1, "menu2", new string[] { "user1", "user2" }));
+            return testData;
         }
     }
 }

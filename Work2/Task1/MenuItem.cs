@@ -4,7 +4,7 @@ using System.Text;
 
 namespace Work2
 {
-    class MenuItem
+    public class MenuItem
     {
         private int position;
 
